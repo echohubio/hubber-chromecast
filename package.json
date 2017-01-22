@@ -27,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "castv2-client": "^1.2.0",
     "chromecast-discover": "0.0.2",
     "debug": "^2.6.0",
     "phetch": "0.0.10"
