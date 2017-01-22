@@ -2,39 +2,52 @@ import chromecastDiscover from 'chromecast-discover';
 // import phetch from 'phetch';
 import Debug from 'debug';
 
-const debug = Debug('chromecast');
+const debug = Debug('hubber:plugin:chromecast');
 
-
-// get this from somerhww
 // let lastChromecastName;
 const chromecasts = {};
 
-const startDiscovery = (thing) => {
-  debug('setup chromecast');
+const startDiscovery = (iot) => {
+  debug('start chromecast discovery');
 
   chromecastDiscover.on('online', (chromecast) => {
     const chromecastName = chromecast.friendlyName.toLowerCase();
 
-    debug('registering new chromecast');
+    debug(`found chromecast ${chromecastName}`);
 
     chromecasts[chromecastName] = chromecast;
 
-    const chromecastState = {
-      state: {
-        reported: {
-          chromecasts,
-        },
-      },
+    const state = {
+      devices: chromecasts,
     };
 
-    const clientTokenUpdate = thing.shadows.update(thing.name, chromecastState);
+    iot.saveState('chromecast', state);
+  });
 
-    if (clientTokenUpdate === null) {
-      console.error('update shadow failed, operation still in progress');
-    }
+  chromecastDiscover.query();
+};
+
+const setup = (options, imports, register) => {
+  Debug('setup');
+
+  Debug('options:', options);
+  Debug('imports:', imports);
+
+  const iot = imports.iot;
+  const hub = imports.hub;
+
+  register(null, {
+    chromecast: {
+    },
+  });
+
+
+  hub.on('ready', () => {
+    startDiscovery(iot);
   });
 };
 
+export default setup;
 
 // const restartChromecast = (chromecastName) => {
 //   const chromecast = chromecasts[chromecastName];
@@ -147,22 +160,6 @@ const startDiscovery = (thing) => {
 //     console.error('Unknown command');
 //   }
 // });
-
-const setup = (options, imports, register) => {
-  Debug('setup');
-
-  Debug('options:', options);
-  Debug('imports:', imports);
-
-  const thing = imports.thing;
-
-  startDiscovery(thing);
-
-  register(null, {});
-};
-
-export default setup;
-
 /*
 function stopChromecast(chromecast) {
   client.connect(chromecast.addresses[0], function() {
