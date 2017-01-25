@@ -25,7 +25,7 @@ const startDiscovery = (iot) => {
     iot.saveState('chromecast', state);
   });
 
-  chromecastDiscover.query();
+  chromecastDiscover.start();
 };
 
 const execute = (payload) => {
