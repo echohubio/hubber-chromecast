@@ -7,16 +7,23 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
-  "repository": {
-    "type": "git",
-    "url": "moo"
-  },
   "keywords": [
+    "chromecast",
+    "echohub",
     "hubber",
-    "echohub"
+    "plugin"
   ],
   "author": "John Ferlito <johnf@inodes.org> (http://inodes.org)",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/echohub/hubber-chromecast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/echohub/hubber-chromecast/issues"
+  },
+  "homepage": "https://github.com/echohub/hubber-chromecast#readme",
+
   "plugin": {
     "consumes": [
       "iot",
