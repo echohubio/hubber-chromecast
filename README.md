@@ -4,7 +4,7 @@ Plugin for EchoHub Hubber, allows you to control your chromecast via Alexa
 
 ## Installation
 
-Via (https://www.echohub.io)[https://www.echohub.io]
+Via [https://www.echohub.io](https://www.echohub.io)
 
 ## Usage
 
