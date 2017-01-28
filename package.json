@@ -1,7 +1,7 @@
 {
   "author": "John Ferlito <johnf@inodes.org> (http://inodes.org)",
   "bugs": {
-    "url": "https://github.com/johnf/hubber-chromecast/issues"
+    "url": "https://github.com/echohubio/hubber-chromecast/issues"
   },
   "dependencies": {
     "castv2-client": "^1.2.0",
@@ -23,7 +23,7 @@
     "webpack": "^1.14.0",
     "webpack-node-externals": "^1.5.4"
   },
-  "homepage": "https://github.com/johnf/hubber-chromecast#readme",
+  "homepage": "https://github.com/echohubio/hubber-chromecast#readme",
   "keywords": [
     "chromecast",
     "echohub",
@@ -44,7 +44,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "johnf/hubber-chromecast"
+    "url": "echohubio/hubber-chromecast"
   },
   "scripts": {
     "build": "webpack -p",
