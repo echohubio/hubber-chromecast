@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 (2017-01-29)
+
+* Update publish scripts (@johnf)
+
 ## 1.0.6 (2017-01-29)
 
 * Move github organisations (@johnf)
