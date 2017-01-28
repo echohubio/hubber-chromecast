@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5 (2017-01-28)
+
+* Fix reboot logic (@johnf)
+
 ## 1.0.4 (2017-01-28)
 
 * 1.0.3 was a bad build (@johnf)
