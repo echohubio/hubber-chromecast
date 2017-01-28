@@ -16,8 +16,7 @@ export const restart = (chromecast) => {
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .json(body)
-    .then(res => res.json())
-    .then(json => debug(json))
+    .then()
     .catch((err) => {
       console.error(`Failed to restart chromecast: ${err}`);
     });

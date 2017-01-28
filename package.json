@@ -49,6 +49,8 @@
   "scripts": {
     "build": "webpack -p",
     "lint": "eslint .",
+    "version": "vi CHANGELOG.md && git add CHANGELOG.md",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "version": "1.0.4"
