@@ -1,4 +1,5 @@
 var path = require('path'); // eslint-disable-line no-var
+var nodeExternals = require('webpack-node-externals'); // eslint-disable-line no-var
 
 module.exports = {
   entry: './src/index.js',
@@ -9,12 +10,7 @@ module.exports = {
     libraryTarget: 'umd',
     filename: 'index.js',
   },
-  externals: [
-    'debug',
-    'phetch',
-    'chromecast-discover',
-    'castv2-client',
-  ],
+  externals: [nodeExternals()],
   module: {
     loaders: [
       {
