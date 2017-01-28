@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6 (2017-01-29)
+
+* Move github organisations (@johnf)
+
 ## 1.0.5 (2017-01-28)
 
 * Fix reboot logic (@johnf)
