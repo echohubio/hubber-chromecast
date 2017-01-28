@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 (2017-01-28)
+
+* 1.0.3 was a bad build (@johnf)
+
 ## 1.0.3 (2017-01-28)
 
 * 1.0.2 was a bad build (@johnf)
