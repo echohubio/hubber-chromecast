@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2017-02-12)
+
+* Move to electron-log (@johnf)
+
 ## 1.0.7 (2017-01-29)
 
 * Update publish scripts (@johnf)
