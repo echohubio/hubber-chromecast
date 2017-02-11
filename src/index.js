@@ -1,20 +1,18 @@
 import chromecastDiscover from 'chromecast-discover';
-import Debug from 'debug';
+import log from 'electron-log';
 
 import * as chromecast from './lib/chromecast';
-
-const debug = Debug('hubber:plugin:chromecast');
 
 let lastChromecastName;
 const chromecasts = {};
 
 const startDiscovery = (iot) => {
-  debug('start chromecast discovery');
+  log.debug('start chromecast discovery');
 
   chromecastDiscover.on('online', (device) => {
     const chromecastName = device.friendlyName.toLowerCase();
 
-    debug(`found chromecast ${chromecastName}`);
+    log.info(`found chromecast ${chromecastName}`);
 
     chromecasts[chromecastName] = device;
 
@@ -29,8 +27,8 @@ const startDiscovery = (iot) => {
 };
 
 const execute = (payload) => {
-  debug('execute');
-  debug(payload);
+  log.debug('execute');
+  log.debug(payload);
   const command = payload.command;
   const chromecastName = payload.chromecastName
     || lastChromecastName || Object.keys(chromecasts)[0];
@@ -38,7 +36,7 @@ const execute = (payload) => {
   const device = chromecasts[chromecastName];
 
   if (!device) {
-    debug('Have not discovered any chromecasts yet');
+    log.debug('Have not discovered any chromecasts yet');
     return;
   }
 
@@ -61,10 +59,10 @@ const execute = (payload) => {
 };
 
 const setup = (options, imports, register) => {
-  Debug('setup');
+  log.debug('setup');
 
-  Debug('options:', options);
-  Debug('imports:', imports);
+  // log.debug('options:', options);
+  // log.debug('imports:', imports);
 
   const iot = imports.iot;
   const hub = imports.hub;
@@ -81,4 +79,3 @@ const setup = (options, imports, register) => {
 };
 
 export default setup;
-

@@ -1,8 +1,6 @@
 import castV2Client from 'castv2-client';
 import phetch from 'phetch';
-import Debug from 'debug';
-
-const debug = Debug('hubber:plugin:chromecast');
+import log from 'electron-log';
 
 export const restart = (chromecast) => {
   const uri = `http://${chromecast.addresses[0]}:8008/setup/reboot`;
@@ -10,7 +8,7 @@ export const restart = (chromecast) => {
     params: 'now',
   };
 
-  debug(`restarting ${chromecast.name}`);
+  log.info(`restarting ${chromecast.name}`);
 
   phetch.post(uri)
     .set('Content-Type', 'application/json')
@@ -18,7 +16,7 @@ export const restart = (chromecast) => {
     .json(body)
     .then()
     .catch((err) => {
-      console.error(`Failed to restart chromecast: ${err}`);
+      log.error(`Failed to restart chromecast: ${err}`);
     });
 };
 
@@ -28,21 +26,21 @@ const DefaultMediaReceiver = castV2Client.DefaultMediaReceiver;
 const client = new Client();
 
 client.on('error', (err) => {
-  console.error('Error: %s', err.message);
+  log.error('Error: %s', err.message);
   client.close();
 });
 
 const mediaCommand = (device, command) => {
-  debug(`running command ${command} on ${device.friendlyName}`);
+  log.info(`running command ${command} on ${device.friendlyName}`);
 
   client.connect(device.addresses[0], () => {
-    debug(`connected to chromecast ${device.friendlyName}`);
+    log.info(`connected to chromecast ${device.friendlyName}`);
 
     client.getSessions((err, stat) => {
-      debug('get session');
+      log.debug('get session');
 
       if (err) {
-        console.error(err);
+        log.error(err);
         client.close();
         return;
       }
@@ -50,28 +48,28 @@ const mediaCommand = (device, command) => {
       const session = stat[0];
 
       client.join(session, DefaultMediaReceiver, (clientError, application) => {
-        debug('joined session');
+        log.debug('joined session');
         if (clientError) {
-          console.error(clientError);
+          log.error(clientError);
           client.close();
           return;
         }
 
         application.getStatus((applicationError, applicationStatus) => {
           if (applicationError) {
-            console.error(applicationError);
+            log.error(applicationError);
             client.close();
             return;
           }
-          debug('application status', applicationStatus);
+          log.debug('application status', applicationStatus);
 
           application[command]((commandError, commandStatus) => {
             if (commandError) {
-              console.error(commandError);
+              log.error(commandError);
               client.close();
               return;
             }
-            debug('command status', commandStatus);
+            log.debug('command status', commandStatus);
 
             client.close();
           });
