@@ -29,7 +29,7 @@ const startDiscovery = (iot) => {
 const execute = (payload) => {
   log.debug('execute');
   log.debug(payload);
-  const command = payload.command;
+  const { command } = payload;
   const chromecastName = payload.chromecastName
     || lastChromecastName || Object.keys(chromecasts)[0];
   lastChromecastName = chromecastName;
@@ -64,8 +64,7 @@ const setup = (options, imports, register) => {
   // log.debug('options:', options);
   // log.debug('imports:', imports);
 
-  const iot = imports.iot;
-  const hub = imports.hub;
+  const { iot, hub } = imports;
 
   register(null, {
     chromecast: {

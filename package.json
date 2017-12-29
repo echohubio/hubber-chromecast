@@ -6,21 +6,22 @@
   "dependencies": {
     "castv2-client": "^1.2.0",
     "chromecast-discover": "^1.0.0",
-    "electron-log": "^1.3.0",
+    "electron-log": "^2.2.13",
     "phetch": "0.0.10"
   },
   "description": "Chromecast plugin for Hubber",
   "devDependencies": {
-    "babel-loader": "^6.2.10",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-latest": "^6.22.0",
-    "eslint": "^3.15.0",
-    "eslint-config-airbnb": "^14.1.0",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^7.1.2",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.9.0",
-    "json-loader": "^0.5.4",
-    "webpack": "^1.14.0",
+    "webpack": "^3.10.0",
+    "webpack-monitor": "^1.0.14",
     "webpack-node-externals": "^1.5.4"
   },
   "homepage": "https://github.com/echohubio/hubber-chromecast#readme",
@@ -47,10 +48,10 @@
     "url": "echohubio/hubber-chromecast"
   },
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack",
     "lint": "eslint .",
     "postversion": "git push",
-    "prepublish": "npm run build",
+    "prepublish": "yarn run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "version": "vi CHANGELOG.md && git add CHANGELOG.md"
   },

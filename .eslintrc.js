@@ -1,7 +1,7 @@
 module.exports = {
-  extends: 'airbnb',
+  extends: 'airbnb-base',
   rules: {
     'no-console': ['error', { allow: ['error'] }],
-    'new-cap': ['error', { 'capIsNewExceptions': ['Debug', 'express.Router'] }],
+    'max-len': ['error', 180],
   },
 };

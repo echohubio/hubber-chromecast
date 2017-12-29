@@ -1,4 +1,4 @@
-import castV2Client from 'castv2-client';
+import { Client, DefaultMediaReceiver } from 'castv2-client';
 import phetch from 'phetch';
 import log from 'electron-log';
 
@@ -19,9 +19,6 @@ export const restart = (chromecast) => {
       log.error(`Failed to restart chromecast: ${err}`);
     });
 };
-
-const Client = castV2Client.Client;
-const DefaultMediaReceiver = castV2Client.DefaultMediaReceiver;
 
 const client = new Client();
 
