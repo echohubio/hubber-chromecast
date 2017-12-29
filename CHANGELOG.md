@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.1 (2017-12-29)
+
+* Fix module export (@johnf)
+
 ## 2.0.0 (2017-12-29)
 
 * Switch to new hubber API (@johnf)
