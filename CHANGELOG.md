@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.2 (2017-12-29)
+
+* Add missing babel-runtime (@johnf)
+
 ## 2.0.1 (2017-12-29)
 
 * Fix module export (@johnf)
