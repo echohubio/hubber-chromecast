@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.1 (2017-12-29)
+
+* Standardise (@johnf)
+
 ## 1.1.0 (2017-02-12)
 
 * Move to electron-log (@johnf)
