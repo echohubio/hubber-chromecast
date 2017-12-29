@@ -4,6 +4,7 @@
     "url": "https://github.com/echohubio/hubber-chromecast/issues"
   },
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "castv2-client": "^1.2.0",
     "chromecast-discover": "^1.0.0",
     "electron-log": "^2.2.13",
