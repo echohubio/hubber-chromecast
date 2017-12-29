@@ -1,5 +1,5 @@
 import { Client, DefaultMediaReceiver } from 'castv2-client';
-import phetch from 'phetch';
+import got from 'got';
 import log from 'electron-log';
 
 export const restart = (chromecast) => {
@@ -10,14 +10,22 @@ export const restart = (chromecast) => {
 
   log.info(`restarting ${chromecast.name}`);
 
-  phetch.post(uri)
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json')
-    .json(body)
-    .then()
-    .catch((err) => {
-      log.error(`Failed to restart chromecast: ${err}`);
-    });
+  return got.post(uri, {
+    json: true,
+    body,
+  }).then((response) => {
+    const { statusCode, statusMessage, body: responseBody } = response;
+    if (statusCode === 200) {
+      return { status: 'OK' };
+    }
+
+    log.error(`reboot failed: c: ${statusCode} m: ${statusMessage} b: ${responseBody}`);
+
+    return { status: 'RESTART_FAILED' };
+  }).catch((err) => {
+    log.error(`Failed to restart chromecast: ${err}`);
+    return { status: 'RESTART_FAILED' };
+  });
 };
 
 const client = new Client();
@@ -27,7 +35,7 @@ client.on('error', (err) => {
   client.close();
 });
 
-const mediaCommand = (device, command) => {
+const mediaCommand = (device, command) => new Promise((resolve /* , reject */) => {
   log.info(`running command ${command} on ${device.friendlyName}`);
 
   client.connect(device.addresses[0], () => {
@@ -39,6 +47,8 @@ const mediaCommand = (device, command) => {
       if (err) {
         log.error(err);
         client.close();
+
+        resolve({ status: 'RESTART_FAILED' });
         return;
       }
 
@@ -49,6 +59,8 @@ const mediaCommand = (device, command) => {
         if (clientError) {
           log.error(clientError);
           client.close();
+
+          resolve({ status: 'RESTART_FAILED' });
           return;
         }
 
@@ -56,6 +68,7 @@ const mediaCommand = (device, command) => {
           if (applicationError) {
             log.error(applicationError);
             client.close();
+            resolve({ status: 'RESTART_FAILED' });
             return;
           }
           log.debug('application status', applicationStatus);
@@ -64,9 +77,11 @@ const mediaCommand = (device, command) => {
             if (commandError) {
               log.error(commandError);
               client.close();
+              resolve({ status: 'RESTART_FAILED' });
               return;
             }
             log.debug('command status', commandStatus);
+            resolve({ status: 'OK' });
 
             client.close();
           });
@@ -74,42 +89,10 @@ const mediaCommand = (device, command) => {
       });
     });
   });
-};
+});
 
 export const pause = chromecast => mediaCommand(chromecast, 'pause');
 
 export const stop = chromecast => mediaCommand(chromecast, 'stop');
 
 export const play = chromecast => mediaCommand(chromecast, 'play');
-
-// function stopChromecast(chromecast) {
-//   client.connect(chromecast.addresses[0], function() {
-//     debug('connected to chromecast ' + chromecast.friendlyName);
-
-//     client.getSessions(function(err, stat) {
-//       if (err) {
-//         console.log(err);
-//         return;
-//       }
-
-//       var session = stat[0];
-
-//       client.receiver.stop(session.sessionId, function(moo, cow) {
-//         debug('stopped: ', session);
-//         console.log(cow);
-
-//         client.close();
-//       });
-
-//       client.join(session, DefaultMediaReceiver, function(error, application) {
-//         application.getStatus(function(moo, cow) {
-//           application.pause(function(moo, cow) {
-//             console.log(moo);
-//             console.log(cow);
-
-//           });
-
-//     });
-
-//   });
-// }

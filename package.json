@@ -7,7 +7,7 @@
     "castv2-client": "^1.2.0",
     "chromecast-discover": "^1.0.0",
     "electron-log": "^2.2.13",
-    "phetch": "0.0.10"
+    "got": "^8.0.1"
   },
   "description": "Chromecast plugin for Hubber",
   "devDependencies": {
@@ -36,7 +36,6 @@
   "name": "hubber-chromecast",
   "plugin": {
     "consumes": [
-      "iot",
       "hub"
     ],
     "provides": [

@@ -3,78 +3,74 @@ import log from 'electron-log';
 
 import * as chromecast from './lib/chromecast';
 
-let lastChromecastName;
-const chromecasts = {};
+class Chromecast {
+  constructor(options, imports, register) {
+    log.debug('Chromecast setup');
 
-const startDiscovery = (iot) => {
-  log.debug('start chromecast discovery');
+    this.chromecasts = {};
+    this.lastChromecastName = null;
 
-  chromecastDiscover.on('online', (device) => {
-    const chromecastName = device.friendlyName.toLowerCase();
+    register(null, {
+      chromecast: this,
+    });
 
-    log.info(`found chromecast ${chromecastName}`);
-
-    chromecasts[chromecastName] = device;
-
-    const state = {
-      devices: Object.keys(chromecasts),
-    };
-
-    iot.saveState('chromecast', state);
-  });
-
-  chromecastDiscover.start();
-};
-
-const execute = (payload) => {
-  log.debug('execute');
-  log.debug(payload);
-  const { command } = payload;
-  const chromecastName = payload.chromecastName
-    || lastChromecastName || Object.keys(chromecasts)[0];
-  lastChromecastName = chromecastName;
-  const device = chromecasts[chromecastName];
-
-  if (!device) {
-    log.debug('Have not discovered any chromecasts yet');
-    return;
+    this.startDiscovery();
   }
 
-  switch (command) {
-    case 'restart':
-      chromecast.restart(device);
-      break;
-    case 'play':
-      chromecast.play(device);
-      break;
-    case 'stop':
-      chromecast.stop(device);
-      break;
-    case 'pause':
-      chromecast.pause(device);
-      break;
-    default:
-      console.error('Unknown command');
+  startDiscovery() {
+    log.debug('start chromecast discovery');
+
+    chromecastDiscover.on('online', (device) => {
+      const chromecastName = device.friendlyName.toLowerCase();
+
+      log.info(`found chromecast ${chromecastName}`);
+
+      this.chromecasts[chromecastName] = device;
+    });
+
+    chromecastDiscover.start();
   }
-};
 
-const setup = (options, imports, register) => {
-  log.debug('setup');
+  async execute(payload) {
+    log.debug('execute');
+    log.debug(payload);
 
-  // log.debug('options:', options);
-  // log.debug('imports:', imports);
+    const { command } = payload;
 
-  const { iot, hub } = imports;
+    const chromecastName = payload.chromecastName || this.lastChromecastName || Object.keys(this.chromecasts)[0];
+    this.lastChromecastName = chromecastName;
 
-  register(null, {
-    chromecast: {
-      execute,
-    },
-  });
+    const device = this.chromecasts[chromecastName];
 
-  hub.on('ready', () => {
-    startDiscovery(iot);
-  });
-};
+    if (!device) {
+      return {
+        status: 'NO_CHROMECASTS',
+      };
+    }
+
+    switch (command) {
+      case 'restart':
+        return chromecast.restart(device);
+      case 'play':
+        return chromecast.play(device);
+      case 'stop':
+        return chromecast.stop(device);
+      case 'pause':
+        return chromecast.pause(device);
+      case 'list':
+        return {
+          status: 'OK',
+          deviceNames: Object.keys(this.chromecasts),
+        };
+      default:
+        console.error('Unknown command');
+        return {
+          status: 'UNKNOWN_COMMAND',
+        };
+    }
+  }
+}
+
+const setup = (options, imports, register) => new Chromecast(options, imports, register);
 
 export default setup;
